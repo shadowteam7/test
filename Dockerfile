@@ -5,7 +5,7 @@ COPY package*.json ./
 RUN npm install
 COPY . .
 RUN npm run build --prod
-
+RUN ls -l /app/dist/my-app
 # Etapa 2: Configurar Nginx para servir la aplicación
 FROM nginx
 COPY --from=build /app/dist/my-app /usr/share/nginx/html
