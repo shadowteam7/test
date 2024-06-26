@@ -9,5 +9,5 @@ FROM node:18 as build-step
     RUN npm run build --prod
 
 FROM nginx:latest
-COPY --from=build-step /app/dist/angularapp /usr/share/nginx/html
+COPY --from=build-step /app/dist/my-app /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/conf.d/default.conf
