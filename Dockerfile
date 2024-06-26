@@ -4,7 +4,7 @@ FROM node:14-alpine as build-step
     WORKDIR /app
     COPY package.json /app
     RUN npm install
-    RUN npm install -g npm@10.8.1
+    RUN npm install -g npm@7.20.5
     COPY . /app
     RUN npm run build --prod
 
