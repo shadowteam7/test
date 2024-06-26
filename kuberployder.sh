@@ -12,7 +12,7 @@ fi
 imageRepository="10.168.131.38:5000"
 projectName="angularapp"
 
-docker build . -t "$imageRepository/$projectName"
+docker build --no-cache . -t "$imageRepository/$projectName"
 docker push "$imageRepository/$projectName"
 
 kubectl delete -f deploy.yaml && true
