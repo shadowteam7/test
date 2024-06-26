@@ -4,10 +4,10 @@ FROM node:14-alpine as build-step
     WORKDIR /app
     COPY package.json /app
     RUN npm install
-    RUN npm install -g npm@7.20.5
+    RUN npm install -g npm@10.8.1
     COPY . /app
     RUN npm run build --prod
 
 FROM nginx:latest
-COPY --from=build-step /app/dist/myApp /usr/share/nginx/html
+COPY --from=build-step /app/dist/angularapp /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/conf.d/default.conf
