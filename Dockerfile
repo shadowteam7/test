@@ -4,9 +4,9 @@ WORKDIR /usr/test/app
 COPY package.json ./
 RUN npm install
 COPY . .
-RUN npm run build
+RUN npm run build --prod
 
 # Stage 2
 FROM nginx:1.22.1-alpine
 COPY nginx.conf /etc/nginx/nginx.conf
-COPY --from=build /usr/test/app/dist/my-app /usr/share/nginx/html
+COPY --from=build /usr/test/app/dist/app-dest /usr/share/nginx/html
