@@ -1,12 +1,12 @@
-FROM node:latest as node 
-WORKDIR /app
-COPY package.json package-lock.json ./
+# Stage 1
+FROM node:18.10.0 AS build
+WORKDIR /usr/test/app
+COPY package.json ./
 RUN npm install
 COPY . .
-RUN npm run build -- --prod
+RUN npm run build
 
-##### Stage 2
-FROM nginx:alpine
-VOLUME /var/cache/nginx
-COPY --from=node /app/dist /usr/share/nginx/html
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+# Stage 2
+FROM nginx:1.22.1-alpine
+COPY nginx.conf /etc/nginx/nginx.conf
+COPY --from=build /usr/test/app/dist/my-app /usr/share/nginx/html
