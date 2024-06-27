@@ -12,3 +12,4 @@ RUN npm run build --prod && ls -al /usr/test/app/dist/my-app
 FROM nginx:1.26.1-alpine-slim 
 COPY nginx.conf /etc/nginx/nginx.conf 
 COPY --from=build /app/dist/my-app /usr/share/nginx/html
+RUN chmod -R 755 /usr/share/nginx/html
