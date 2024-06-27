@@ -1,23 +1,12 @@
-# ----------------------------
-# build from source
-# ----------------------------
-FROM node:18 AS build
-
+FROM node:latest as node 
 WORKDIR /app
-
-COPY package*.json .
+COPY package.json package-lock.json ./
 RUN npm install
-
 COPY . .
-RUN npm run build
+RUN npm run build -- --prod
 
-# ----------------------------
-# run with nginx
-# ----------------------------
-FROM nginx
-
-RUN rm /etc/nginx/conf.d/default.conf
-COPY nginx.conf /etc/nginx/conf.d
-COPY --from=build /app/dist/my-app /usr/share/nginx/html
-
-EXPOSE 80
+##### Stage 2
+FROM nginx:alpine
+VOLUME /var/cache/nginx
+COPY --from=node /app/dist /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
