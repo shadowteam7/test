@@ -7,6 +7,6 @@ COPY . .
 RUN npm run build --prod
 
 # Stage 2
-FROM nginx:1.22.1-alpine
+FROM FROM nginx:1.26.1-alpine-slim 
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY --from=build /usr/test/app/dist/app-dest /usr/share/nginx/html
