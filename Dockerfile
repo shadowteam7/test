@@ -16,7 +16,7 @@ COPY . /app
 
 # Build the Angular project
 RUN npm run build --prod
-
+RUN ls /app/dist/my-app
 # Use the latest nginx as the base for the final image
 FROM nginx:latest
 
