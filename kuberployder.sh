@@ -10,7 +10,7 @@ then
   exit 1
 fi
 imageRepository="10.168.131.38:5000"
-projectName="angularapp"
+projectName="angularapp17"
 
 docker build --no-cache . -t "$imageRepository/$projectName"
 docker push "$imageRepository/$projectName"
