@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
       - name: devopsdemo
-        image: 10.168.23.36:5000/angularapp17
+        image: 10.168.131.38:5000/angularapp17
         ports:
          - containerPort: 80
