@@ -1,15 +1,27 @@
-# Etapa 1: Construir la aplicación Angular
-FROM node:18 AS build
+# Use Node 18 as the base image
+FROM node:18-alpine as build-step
+
+# Create and set the working directory
+RUN mkdir -p /app
 WORKDIR /app
-COPY package*.json ./
+
+# Copy package.json and install dependencies
+COPY package.json /app
 RUN npm install
-COPY . .
-RUN npm run build --prod
 
-# Etapa 2: Configurar Nginx para servir la aplicación
-FROM nginx:alpine
-COPY --from=build /app/dist/my-app /usr/share/nginx/html
+# Angular 17 projects should work with the npm version that comes with Node 18, so the explicit npm install command for an older version is removed.
+
+# Copy the rest of the application
+COPY . /app
+
+# Build the Angular project
+RUN npm run build --configuration production
+
+# Use the latest nginx as the base for the final image
+FROM nginx:latest
+
+# Copy the built Angular app to the nginx serve directory
+COPY --from=build-step /app/dist/my-app /usr/share/nginx/html
+
+# Copy the nginx configuration
 COPY nginx.conf /etc/nginx/conf.d/default.conf
-
-# Exponer el puerto en el que Nginx servirá la aplicación
-EXPOSE 80
