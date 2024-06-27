@@ -6,7 +6,7 @@ WORKDIR /app
 COPY package.json ./
 RUN npm install
 COPY . .
-RUN npm run build --prod
+RUN npm run build --prod && ls -al /usr/test/app/dist/my-app
 
 # Stage 2
 FROM nginx:1.26.1-alpine-slim 
