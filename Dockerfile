@@ -15,7 +15,7 @@ RUN npm install
 COPY . /app
 
 # Build the Angular project
-RUN npm run build --configuration production
+RUN npm run build --prod
 
 # Use the latest nginx as the base for the final image
 FROM nginx:latest
