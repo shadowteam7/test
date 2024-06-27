@@ -1,20 +1,19 @@
-apiVersion: apps/v1
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
 kind: Deployment
 metadata:
-  name: angularapp
+  name: angularapp17
 spec:
-  replicas: 1
   selector:
     matchLabels:
-      app: angularapp
+      app: angularapp17
+  replicas: 1
   template:
     metadata:
       labels:
-        app: angularapp
+        app: angularapp17
     spec:
       containers:
-      - name: angularapp
-        image: 10.168.131.38:5000/angularapp:latest
-        imagePullPolicy: IfNotPresent
+      - name: devopsdemo
+        image: 10.168.23.36:5000/angularapp17
         ports:
-        - containerPort: 80
+         - containerPort: 80
