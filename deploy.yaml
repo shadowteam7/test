@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: angularapp17
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: angularapp17
@@ -16,7 +16,7 @@ spec:
       - name: devopsdemo
         image: 10.168.131.38:5000/angularapp17:latest
         ports:
-        - containerPort: 4000
+        - containerPort: 80
 ---
 apiVersion: v1
 kind: Service
@@ -28,5 +28,6 @@ spec:
   ports:
     - protocol: TCP
       port: 80
-      targetPort: 4000
+      targetPort: 80
   type: LoadBalancer
+
