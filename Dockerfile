@@ -22,14 +22,17 @@ FROM node:18 as production
 # Establece el directorio de trabajo
 WORKDIR /app
 
+# Copia package.json y package-lock.json para instalar las dependencias de producción
+COPY --from=build /app/package*.json ./
+
+# Instala las dependencias de producción
+RUN npm install --only=production
+
 # Copia los archivos compilados desde la etapa de construcción
 COPY --from=build /app/dist ./dist
 COPY --from=build /app/server.ts ./server.ts
 COPY --from=build /app/tsconfig.server.json ./tsconfig.server.json
 COPY --from=build /app/src/environments/environment.prod.ts ./src/environments/environment.prod.ts
-
-# Instala las dependencias de producción
-RUN npm install --only=production
 
 # Expone el puerto de la aplicación
 EXPOSE 4000
