@@ -1,28 +1,26 @@
-# Stage 1: Build Angular application
-FROM node:20.12.2 AS build
+# Etapa 1: Construcción de la aplicación Angular
+FROM node:18 AS build
+
 WORKDIR /app
-COPY package.json package-lock.json ./
+
+COPY package*.json ./
 RUN npm install
+
 COPY . .
-RUN npm run build --prod
+RUN npm run build:ssr
 
-# Stage 2: Setup nginx server to serve Angular application
-FROM nginx
+# Etapa 2: Configuración del servidor
+FROM node:18
 
-# Remove default nginx website
-RUN rm -rf /usr/share/nginx/html/*
+WORKDIR /app
 
-# Copy built Angular app to nginx
-COPY --from=build /app/dist/my-app /usr/share/nginx/html
+COPY --from=build /app/dist /app/dist
+COPY --from=build /app/package*.json ./
 
-# Copy nginx configuration
+RUN npm install --only=prod
+
 COPY nginx.conf /etc/nginx/nginx.conf
 
-# Set permissions
-RUN chmod -R 755 /usr/share/nginx/html
+CMD ["node", "dist/server/main.js"]
 
-# Expose port 80
-EXPOSE 80
-
-# Start nginx
-CMD ["nginx", "-g", "daemon off;"]
+EXPOSE 4000
