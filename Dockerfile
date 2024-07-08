@@ -17,24 +17,21 @@ COPY . .
 RUN npm run build:ssr
 
 # Etapa 2: Producción
-FROM nginx:stable-alpine as production
+FROM node:18 as production
 
-# Copia los archivos de configuración de Nginx
-COPY nginx.conf /etc/nginx/nginx.conf
+# Establece el directorio de trabajo
+WORKDIR /app
 
-# Elimina los archivos HTML por defecto de Nginx
-RUN rm -rf /usr/share/nginx/html/*
+# Copia los archivos compilados desde la etapa de construcción
+COPY --from=build /app/dist ./dist
+COPY --from=build /app/server.ts ./server.ts
+COPY --from=build /app/tsconfig.server.json ./tsconfig.server.json
 
-# Copia los archivos estáticos compilados desde la etapa de construcción
-COPY --from=build /app/dist/browser /usr/share/nginx/html
-COPY --from=build /app/dist/server /app/server
-
-# Copia y establece los permisos del script de inicio
-COPY start.sh /app/start.sh
-RUN chmod +x /app/start.sh
+# Instala las dependencias de producción
+RUN npm install --only=production
 
 # Expone el puerto de la aplicación
-EXPOSE 80
+EXPOSE 4000
 
-# Comando para ejecutar Nginx y la aplicación SSR
-CMD ["/app/start.sh"]
+# Comando para ejecutar la aplicación
+CMD ["node", "server.js"]
