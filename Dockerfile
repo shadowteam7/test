@@ -26,6 +26,7 @@ WORKDIR /app
 COPY --from=build /app/dist ./dist
 COPY --from=build /app/server.ts ./server.ts
 COPY --from=build /app/tsconfig.server.json ./tsconfig.server.json
+COPY --from=build /app/src/environments/environment.prod.ts ./src/environments/environment.prod.ts
 
 # Instala las dependencias de producción
 RUN npm install --only=production
