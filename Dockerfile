@@ -16,6 +16,9 @@ COPY . .
 # Construye la aplicación Angular SSR
 RUN npm run build:ssr
 
+# Compila server.ts a server.js
+RUN npx tsc server.ts --outDir dist
+
 # Etapa 2: Producción
 FROM node:18 as production
 
@@ -30,9 +33,11 @@ RUN npm install --only=production
 
 # Copia los archivos compilados desde la etapa de construcción
 COPY --from=build /app/dist ./dist
-COPY --from=build /app/server.ts ./server.ts
 COPY --from=build /app/tsconfig.server.json ./tsconfig.server.json
 COPY --from=build /app/src/environments/environment.prod.ts ./src/environments/environment.prod.ts
+
+# Copia el archivo compilado server.js
+COPY --from=build /app/dist/server.js ./server.js
 
 # Expone el puerto de la aplicación
 EXPOSE 4000
