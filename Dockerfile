@@ -21,6 +21,6 @@ RUN npm install --only=prod
 
 COPY nginx.conf /etc/nginx/nginx.conf
 
-CMD ["node", "dist/server/main.js"]
+CMD ["node", "dist/my-app/server/main.js"]
 
 EXPOSE 4000
