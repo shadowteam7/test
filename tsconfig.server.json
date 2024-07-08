@@ -1,15 +1,12 @@
 {
-  "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "./dist/server",
-    "target": "es2020",
     "module": "commonjs",
-    "types": ["node"]
+    "target": "es2018",  // O cualquier versión que soporte `import.meta`
+    "outDir": "./dist",
+    "esModuleInterop": true, // Habilita la interoperabilidad de módulos ES para CommonJS
+    "forceConsistentCasingInFileNames": true
   },
-  "files": [
-    "src/main.server.ts"
-  ],
   "include": [
-    "src/**/*.d.ts"
+    "server.ts"
   ]
 }
